@@ -560,4 +560,6 @@
     <dimen name="rounded_corner_radius_top">33px</dimen>
     <dimen name="rounded_corner_radius_bottom">39px</dimen>
 
+    <!-- Specifies whether to decouple the auto-suspend state of the device from the display on/off state. -->
+    <bool name="config_powerDecoupleAutoSuspendModeFromDisplay">true</bool>
 </resources>
