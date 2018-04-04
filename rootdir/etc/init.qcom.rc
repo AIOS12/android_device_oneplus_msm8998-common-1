@@ -145,6 +145,12 @@ on init
     write /sys/bus/msm_subsys/devices/subsys6/restart_level RELATED
 
 on fs
+    # Start HW service manager early
+    start hwservicemanager
+
+    wait /dev/block/platform/soc/1da4000.ufshc
+    symlink /dev/block/platform/soc/1da4000.ufshc /dev/block/bootdevice
+
     mount_all /vendor/etc/fstab.qcom --early
 
     chown root system /mnt/vendor/persist
@@ -182,6 +188,13 @@ on fs
 
     chmod 0664 /mnt/vendor/persist/sensors/sensors_settings
 
+<<<<<<< HEAD
+=======
+    # qseecomd needs /dev/block/bootdevice
+    # vold needs keymaster that needs qseecomd
+    start vendor.qseecomd
+
+>>>>>>> 0bd1f02... msm8998-common: Wait for hwservicemanager ready before running fsck
 on post-fs
     chown system system /proc/ship_mode
     chown system system /dev/param
