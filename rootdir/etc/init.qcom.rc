@@ -185,13 +185,10 @@ on fs
 
     chmod 0664 /mnt/vendor/persist/sensors/sensors_settings
 
-<<<<<<< HEAD
-=======
     # qseecomd needs /dev/block/bootdevice
     # vold needs keymaster that needs qseecomd
     start vendor.qseecomd
 
->>>>>>> 0bd1f02... msm8998-common: Wait for hwservicemanager ready before running fsck
 on post-fs
     chown system system /proc/ship_mode
     chown system system /dev/param
@@ -642,7 +639,14 @@ service vendor.thermal-engine /vendor/bin/thermal-engine
 service vendor.time_daemon /vendor/bin/time_daemon
     class main
     user system
-    group system
-    capabilities SYS_TIME
+    group system input wakelock uhid
+    capabilities BLOCK_SUSPEND
+    rlimit rtprio 10 10
     task_profiles ServiceCapacityLow
+
+on property:sys.boot_completed=1
+    # Restrict permissions to socket file
+    # to hide Magisk & co.
+    chmod 440 /proc/net/unix
+
 
